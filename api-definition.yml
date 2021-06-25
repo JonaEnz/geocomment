@@ -84,6 +84,7 @@ components:
     newReport:
       properties:
         comment:
+          type: object
           $ref: "#/components/schemas/comment"
         userId:
           type: integer
@@ -396,7 +397,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/comment"
+                  allOf:
+                    - $ref: "#/components/schemas/comment"
+                    - type: object
+                      properties:
+                        thread:
+                          $ref: "#/components/schemas/thread"
         default:
           description: failure
   /user/me/comments:
@@ -416,7 +422,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/comment"
+                  allOf:
+                    - $ref: "#/components/schemas/comment"
+                    - type: object
+                      properties:
+                        thread:
+                          $ref: "#/components/schemas/thread"
         default:
           description: failure
 
