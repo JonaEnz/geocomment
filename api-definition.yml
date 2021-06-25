@@ -1,0 +1,267 @@
+openapi: "3.0.2"
+info:
+  title: API Title
+  version: "1.0"
+servers:
+  - url: https://api.server.test/v1
+
+components:
+  schemas:
+    newThread:
+      type: object
+      properties:
+        title:
+          type: string
+        authorId:
+          type: integer
+          format: int32
+        location:
+          $ref: "#/components/schemas/location"
+    thread:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/newThread"
+        - properties:
+            id:
+              type: integer
+              format: int32
+
+    location:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: float
+        lng:
+          type: number
+          format: float
+    newComment:
+      type: object
+      properties:
+        parentId:
+          type: integer
+          format: int64
+        authorId:
+          type: integer
+          format: int64
+        content:
+          type: string
+        created_at:
+          type: number
+          format: timestamp
+    comment:
+      allOf:
+        - $ref: "#/components/schemas/newComment"
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              format: int64
+    user:
+      properties:
+        id:
+          type: integer
+          format: int64
+paths:
+  /threads:
+    get:
+      parameters:
+        - name: lat
+          required: true
+          in: query
+          schema:
+            type: number
+            format: float
+        - name: lng
+          required: true
+          in: query
+          schema:
+            type: number
+            format: float
+        - name: radius
+          required: true
+          in: query
+          schema:
+            type: number
+            format: float
+      responses:
+        default:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/thread"
+
+  /thread/{threadId}:
+    get:
+      parameters:
+        - name: threadId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/thread"
+
+  /thread/:
+    post:
+      summary: Create new thread
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newThread"
+      responses:
+        "201":
+          description: OK
+
+  /thread/{threadId}/comments:
+    get:
+      parameters:
+        - name: threadId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/comment"
+    post:
+      parameters:
+        - name: threadId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newComment"
+      responses:
+        "200":
+          description: OK
+  /thread/{threadId}/comments/{commentId}:
+    get:
+      parameters:
+        - name: threadId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+        - name: commentId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/comment"
+    delete:
+      parameters:
+        - name: threadId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+        - name: commentId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: OK
+
+  /thread/{threadId}/comments/{commentId}/children:
+    get:
+      parameters:
+        - name: threadId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+        - name: commentId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/comment"
+
+  /user/{userId}:
+    get:
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+
+      responses:
+        default:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+
+  /user/{userId}/comments:
+    get:
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+        - name: top
+          in: query
+          schema:
+            type: integer
+          required: false
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/comment"
