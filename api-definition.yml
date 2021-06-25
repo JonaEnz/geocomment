@@ -260,7 +260,7 @@ paths:
         - name: vote
           description: true for upvote, flase for downvote
           required: true
-          in: path
+          in: query
           schema:
             type: boolean
       responses:
