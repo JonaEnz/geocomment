@@ -12,6 +12,8 @@ components:
       properties:
         title:
           type: string
+        description:
+          type: string
         authorId:
           type: integer
           format: int32
@@ -64,9 +66,40 @@ components:
         id:
           type: integer
           format: int64
+        banned:
+          type: boolean
+        banUntil:
+          description: Banned until (0 = infinite)
+          type: integer
+          format: timestamp
+
+    newReport:
+      properties:
+        comment:
+          $ref: "#/components/schemas/comment"
+        userId:
+          type: integer
+          format: int64
+        reason:
+          type: string
+
+    report:
+      allOf:
+        - $ref: "#/components/schemas/newReport"
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              format: int64
+            handled:
+              type: boolean
+
 paths:
   /threads:
     get:
+      summary: Returns threads in a radius around the given position
       parameters:
         - name: lat
           required: true
@@ -98,6 +131,7 @@ paths:
 
   /thread/{threadId}:
     get:
+      summary: Returns thread with given id
       parameters:
         - name: threadId
           required: true
@@ -112,6 +146,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/thread"
+        "401":
+          description: unauthorized
+        "404":
+          description: not found
 
   /thread/:
     post:
@@ -124,9 +162,12 @@ paths:
       responses:
         "201":
           description: OK
+        "401":
+          description: unauthorized
 
   /thread/{threadId}/comments:
     get:
+      summary: Get comments in thread
       parameters:
         - name: threadId
           required: true
@@ -134,6 +175,12 @@ paths:
           schema:
             type: integer
             format: int64
+        - name: levels
+          required: false
+          description: Maximum level of subcomments
+          in: query
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -144,6 +191,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/comment"
     post:
+      summary: Create new top level comment
       parameters:
         - name: threadId
           required: true
@@ -161,6 +209,7 @@ paths:
           description: OK
   /thread/{threadId}/comments/{commentId}:
     get:
+      summary: Get single comment
       parameters:
         - name: threadId
           required: true
@@ -181,7 +230,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/comment"
-    delete:
+        "401":
+          description: unauthorized
+  /thread/{threadId}/comments/{commentId}/delete:
+    post:
+      summary: Delete own comment
       parameters:
         - name: threadId
           required: true
@@ -198,9 +251,26 @@ paths:
       responses:
         default:
           description: OK
+        "401":
+          description: unauthorized
+
+  /thread/{threadId}/comments/{commentId}/report:
+    post:
+      summary: Report comment to admins
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newReport"
+      responses:
+        "200":
+          description: OK
+        default:
+          description: failure
 
   /thread/{threadId}/comments/{commentId}/children:
     get:
+      summary: Get subcomments for this comment
       parameters:
         - name: threadId
           required: true
@@ -214,6 +284,13 @@ paths:
           schema:
             type: integer
             format: int64
+        - name: level
+          description: Maximum level of subcomments
+          required: false
+          in: query
+          schema:
+            type: integer
+            format: int32
       responses:
         "200":
           description: OK
@@ -223,9 +300,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/comment"
+        "404":
+          description: not found
 
   /user/{userId}:
     get:
+      summary: Get information about a user
       parameters:
         - name: userId
           required: true
@@ -235,15 +315,18 @@ paths:
             format: int64
 
       responses:
-        default:
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/user"
+        "401":
+          description: unauthorized
 
   /user/{userId}/comments:
     get:
+      summary: Get last comments by a user
       parameters:
         - name: userId
           required: true
@@ -265,3 +348,103 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/comment"
+        default:
+          description: failure
+  /user/me/comments:
+    get:
+      summary: Get own comments
+      parameters:
+        - name: top
+          in: query
+          schema:
+            type: integer
+          required: false
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/comment"
+        default:
+          description: failure
+
+  /admin/reports:
+    get:
+      summary: Get reports (only unhandled by default)
+      parameters:
+        - name: all
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/report"
+  /admin/reports/{reportId}:
+    post:
+      summary: Handle report
+      parameters:
+        - name: reportId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+        - name: action
+          description: enum (ban, ignore)
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: unauthorized
+        "404":
+          description: not found
+        default:
+          description: failure
+  /admin/ban/{userId}:
+    post:
+      summary: Ban user for a specific time
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+        - name: time
+          description: Time in seconds, 0 = infinite
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                reason:
+                  type: string
+                until:
+                  type: integer
+                  format: timestamp
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: unauthorized
+        default:
+          description: failure
