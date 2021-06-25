@@ -257,6 +257,19 @@ paths:
   /thread/{threadId}/comments/{commentId}/report:
     post:
       summary: Report comment to admins
+      parameters:
+        - name: threadId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
+        - name: commentId
+          required: true
+          in: path
+          schema:
+            type: integer
+            format: int64
       requestBody:
         content:
           application/json:
@@ -427,7 +440,7 @@ paths:
         - name: time
           description: Time in seconds, 0 = infinite
           required: true
-          in: path
+          in: query
           schema:
             type: integer
             format: int64
