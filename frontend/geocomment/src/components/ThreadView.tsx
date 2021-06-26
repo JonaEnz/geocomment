@@ -6,16 +6,24 @@ import { Service as ServiceApi } from "../api/services/Service";
 import { thread } from "../api/models/thread";
 import { useState } from "react";
 import { comment } from "../api";
-import { threadId } from "worker_threads";
-import { Grid, AppBar, Toolbar, Paper } from "@material-ui/core";
+import { Grid, AppBar } from "@material-ui/core";
 import ReportDialog from "./Thread/ReportDialog";
 
-function onMessageSubmit(
+async function onMessageSubmit(
   msg: string,
   anon: boolean,
   threadId: number,
-  commentId: number
+  commentId: number,
+  file: any
 ): Promise<boolean> {
+  if (file !== null) {
+    var formdata = new FormData();
+    formdata.append("threadId", threadId.toString());
+    formdata.append("commentId", commentId.toString());
+    formdata.append("image", file, file.name);
+    var resp = await ServiceApi.uploadImage(formdata);
+    msg += "[img:" + resp.url + "]";
+  }
   ServiceApi.postComment(threadId, {
     threadId: threadId,
     parentId: commentId,
@@ -135,7 +143,8 @@ function ThreadView(state: { thread: thread }) {
                 msg,
                 anon,
                 state.thread.id,
-                selectedCommentId
+                selectedCommentId,
+                getFile === undefined ? null : getFile
               );
             }}
           />
