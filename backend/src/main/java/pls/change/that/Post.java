@@ -10,7 +10,7 @@ import java.util.UUID;
 public class Post {
     @Id @GeneratedValue public Long id;
     public UUID authorId;
-    public Comment comment;
+    public String comment;
     public Image image;
     public LocalDateTime timestamp;
     public int upVotes;
