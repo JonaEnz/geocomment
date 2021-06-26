@@ -17,5 +17,5 @@ public class Thread {
     public Location location;
     @OneToMany
     @JsonIgnore
-    public List<Post> comments;
+    public List<Comment> comments;
 }
