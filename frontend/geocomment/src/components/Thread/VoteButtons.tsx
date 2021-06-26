@@ -13,7 +13,8 @@ import { Service as ServiceApi } from "../../api/services/Service";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import FlagIcon from "@material-ui/icons/Flag";
-import { green, grey, red, yellow } from "@material-ui/core/colors";
+import AddCommentIcon from "@material-ui/icons/AddComment";
+import { green, grey, red, yellow, blue } from "@material-ui/core/colors";
 
 function vote(vote: number, c: comment): Promise<boolean> {
   if (Math.abs(vote) !== 1) {
@@ -29,10 +30,6 @@ function vote(vote: number, c: comment): Promise<boolean> {
       return false;
     }
   );
-}
-
-function openReport() {
-  throw new Error("Function not implemented.");
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -57,6 +54,10 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: grey[900],
       color: yellow[500],
     },
+    lightblue: {
+      backgroundColor: grey[900],
+      color: blue[400],
+    },
     grey: {
       backgroundColor: grey[900],
       color: grey[100],
@@ -64,7 +65,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function VoteButtons(state: { comment: comment }) {
+function VoteButtons(state: {
+  comment: comment;
+  reportCallback: (id: number) => void;
+  selectCallback: (id: number) => void;
+}) {
   const [upvoted, setUpvoted] = useState(false);
   const [downvoted, setDownvoted] = useState(false);
   const classes = useStyles();
@@ -101,11 +106,20 @@ function VoteButtons(state: { comment: comment }) {
       </Button>
       <Button
         onClick={() => {
-          openReport();
+          state.reportCallback(state.comment.id);
         }}
       >
         <Avatar className={classes.yellow}>
           <FlagIcon />
+        </Avatar>
+      </Button>
+      <Button
+        onClick={() => {
+          state.selectCallback(state.comment.id);
+        }}
+      >
+        <Avatar className={classes.lightblue}>
+          <AddCommentIcon />
         </Avatar>
       </Button>
     </div>

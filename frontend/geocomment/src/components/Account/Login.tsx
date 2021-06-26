@@ -11,6 +11,7 @@ import {
 import { AccountCircle, VpnKey, Lock } from "@material-ui/icons";
 import { useUserContext } from "../../contexts/UserContext";
 import { Service as ApiService } from "../../api/services/Service";
+import { Redirect, useHistory } from "react-router-dom";
 import { OpenAPI } from "../../api";
 
 function Login() {
@@ -28,20 +29,28 @@ function Login() {
     },
   }));
 
-  function submit(event: React.FormEvent<HTMLFormElement>) {
+  function submit(event: React.FormEvent<HTMLFormElement>): Promise<boolean> {
     event.preventDefault();
-    ApiService.login({ email: username, password: password }).then(
+    return ApiService.login({ email: username, password: password }).then(
       (resp) => {
         console.log(resp);
-        setUserCredentials({ email: username, token: resp.token });
+        setUserCredentials({
+          email: username,
+          userid: resp.userid,
+          token: resp.token,
+        });
         OpenAPI.WITH_CREDENTIALS = true;
         OpenAPI.TOKEN = resp.token;
+        return true;
       },
       (error) => {
         console.log(error);
+        return false;
       }
     );
   }
+
+  const history = useHistory();
 
   const classes = useStyles();
   return (
@@ -50,7 +59,13 @@ function Login() {
         <form
           className={classes.root}
           autoComplete="off"
-          onSubmit={(e) => submit(e)}
+          onSubmit={(e) => {
+            submit(e).then((res) => {
+              if (res) {
+                history.push("/");
+              }
+            });
+          }}
         >
           <Grid
             container
@@ -97,6 +112,7 @@ function Login() {
               onClick={() =>
                 setUserCredentials({
                   email: "max.mustermann@gmail.com",
+                  userid: 1,
                   token: "2dg638d3928h9283hd",
                 })
               }

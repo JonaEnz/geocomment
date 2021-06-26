@@ -13,6 +13,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Service as ApiService } from "../../api/services/Service";
 import { OpenAPI } from "../../api";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +32,7 @@ function Register() {
   const [privateAcc, setPrivate] = useState<boolean>(false);
 
   const classes = useStyles();
+  const history = useHistory();
 
   function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -41,9 +43,10 @@ function Register() {
     }).then(
       () => {
         ApiService.login({ email: username, password: password }).then((r) => {
-          setUserCredentials({ email: username, token: r.token });
+          setUserCredentials({ email: username, userid: r.id, token: r.token });
           OpenAPI.WITH_CREDENTIALS = true;
           OpenAPI.TOKEN = r.token;
+          history.push("/");
         });
       },
       (error) => {
@@ -114,6 +117,7 @@ function Register() {
                 onClick={() =>
                   setUserCredentials({
                     email: "max.mustermann@gmail.com",
+                    userid: 1,
                     token: "2dg638d3928h9283hd",
                   })
                 }

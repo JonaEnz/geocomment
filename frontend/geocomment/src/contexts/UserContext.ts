@@ -1,9 +1,10 @@
 import { createContext, useContext } from "react";
 
 export type UserCredentials = {
-  email: string,
-  token: string
-}
+  email: string;
+  userid: number;
+  token: string;
+};
 
 export type UserContextType = {
   userCredentials: UserCredentials;
@@ -11,8 +12,9 @@ export type UserContextType = {
 };
 
 export const UserContext = createContext<UserContextType>({
-  userCredentials: {email: "", token: ""},
-  setUserCredentials: (userCredentials: UserCredentials) => console.warn("no context provider"),
+  userCredentials: { email: "", userid: 0, token: "" },
+  setUserCredentials: (userCredentials: UserCredentials) =>
+    console.warn("no context provider"),
 });
 
 export const useUserContext = () => useContext(UserContext);

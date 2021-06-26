@@ -36,7 +36,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function ThreadInfo(state: { thread: thread }) {
+function ThreadInfo(state: {
+  thread: thread;
+  selectCallback: (id: number) => void;
+  reportCallback: (id: number) => void;
+}) {
   const classes = useStyles();
   const comment = {
     id: 0,
@@ -71,7 +75,18 @@ function ThreadInfo(state: { thread: thread }) {
         {res != null ? res[3] : state.thread.description}
       </Typography>
       {res != null ? (
-        <img src={res[2]} alt="imagePath" width="250px" height="250px"></img>
+        <img
+          src={res[2]}
+          alt="imagePath"
+          width="250px"
+          height="250px"
+          style={{
+            maxWidth: "90%",
+            maxHeight: "90%",
+            objectFit: "cover",
+            paddingBottom: "20px",
+          }}
+        ></img>
       ) : (
         <p></p>
       )}
@@ -89,7 +104,15 @@ function ThreadInfo(state: { thread: thread }) {
             paddingTop: "5px",
           }}
         >
-          <VoteButtons comment={comment} />
+          <VoteButtons
+            comment={comment}
+            selectCallback={(id: number) => {
+              state.selectCallback(0);
+            }}
+            reportCallback={(id: number) => {
+              state.reportCallback(0);
+            }}
+          />
         </Grid>
         <Grid item xs={2} />
       </Grid>
