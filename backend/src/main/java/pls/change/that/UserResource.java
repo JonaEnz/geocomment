@@ -1,7 +1,5 @@
 package pls.change.that;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -13,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.Collections;
 import java.util.List;
 
-@Path("")
+@Path(Shared.RESOURCES_PATH_PREFIX)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserResource {

@@ -1,18 +1,23 @@
 package pls.change.that;
 
+import io.smallrye.common.constraint.Nullable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-public class Post {
+public class Comment {
     @Id @GeneratedValue public Long id;
     public UUID authorId;
-    public String comment;
-    public Image image;
+    public String content;
     public LocalDateTime timestamp;
+    @OneToOne
+    @Nullable
+    public Image image;
     public int upVotes;
     public int downVotes;
 }
