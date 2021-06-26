@@ -32,11 +32,6 @@ function vote(vote: number, c: comment): Promise<boolean> {
   );
 }
 
-function openReport() {
-  //TODO
-  console.log("openReport()");
-}
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     secondary: {

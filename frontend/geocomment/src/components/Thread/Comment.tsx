@@ -1,16 +1,10 @@
 import React from "react";
 import Card from "@material-ui/core/Card";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import ThumbDownIcon from "@material-ui/icons/ThumbDown";
-import FlagIcon from "@material-ui/icons/Flag";
 import {
   Avatar,
-  Box,
-  Button,
   createStyles,
   Grid,
   makeStyles,
-  TextField,
   Theme,
   Typography,
 } from "@material-ui/core";
@@ -51,6 +45,7 @@ function ThreadComment(state: {
   comment: comment;
   selectCallback: (id: number) => void;
   reportCallback: (id: number) => void;
+  voteButtons?: boolean;
 }) {
   const classes = useStyles();
 
@@ -119,11 +114,13 @@ function ThreadComment(state: {
             justifyContent: "flex-end",
           }}
         >
-          <VoteButtons
-            comment={state.comment}
-            reportCallback={state.reportCallback}
-            selectCallback={state.selectCallback}
-          />
+          {state.voteButtons !== false && (
+            <VoteButtons
+              comment={state.comment}
+              reportCallback={state.reportCallback}
+              selectCallback={state.selectCallback}
+            />
+          )}
         </Grid>
       </Grid>
     </Card>

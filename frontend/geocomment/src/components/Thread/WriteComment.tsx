@@ -12,18 +12,25 @@ import {
 import {
   RateReview as RateReviewIcon,
   AddAPhoto as AddAPhotoIcon,
+  Person as PersonIcon,
+  Block as BlockIcon,
 } from "@material-ui/icons";
 import { AnyARecord } from "dns";
 
 function WriteComment(state: {
-  submit: (message: string, file: object) => Promise<boolean>;
+  submit: (
+    message: string,
+    anonymous: boolean,
+    file: object
+  ) => Promise<boolean>;
 }) {
   const [msg, setMsg] = useState("");
   const [error, setError] = useState(false);
   const [getFile, setFile] = useState<object>({});
+  const [getAnonymous, setAnonymous] = useState(true);
 
   function submit() {
-    state.submit(msg, getFile).then((r) => {
+    state.submit(msg, getAnonymous, getFile).then((r) => {
       setMsg("");
       if (!r) {
         setError(true);
@@ -49,14 +56,17 @@ function WriteComment(state: {
                 id="fileUpload"
                 type="file"
               />
-              <label htmlFor="fileUpload">
+              <label
+                htmlFor="fileUpload"
+                style={{ width: "10%", paddingRight: "5px" }}
+              >
                 <Button component="span" style={{}}>
                   <AddAPhotoIcon />
                 </Button>
               </label>
               <TextField
                 multiline={true}
-                style={{ width: "70%", padding: "3px", paddingLeft: "7px" }}
+                style={{ width: "60%", padding: "3px" }}
                 placeholder="Input Comment"
                 value={msg}
                 onChange={(s) => {
@@ -69,11 +79,24 @@ function WriteComment(state: {
               {/* <Divider orientation="vertical" /> */}
               <IconButton
                 onClick={() => {
+                  setAnonymous(!getAnonymous);
+                }}
+                aria-label="submit"
+                style={{
+                  maxWidth: "10%",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
+                {getAnonymous ? <BlockIcon /> : <PersonIcon />}
+              </IconButton>
+              <IconButton
+                onClick={() => {
                   submit();
                 }}
                 aria-label="submit"
                 style={{
-                  maxWidth: "20%",
+                  maxWidth: "15%",
                   display: "flex",
                   justifyContent: "flex-end",
                   paddingLeft: "5%",

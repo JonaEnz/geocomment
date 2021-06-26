@@ -7,18 +7,19 @@ import { thread } from "../api/models/thread";
 import { useState } from "react";
 import { comment } from "../api";
 import { threadId } from "worker_threads";
-import { Grid } from "@material-ui/core";
+import { Grid, AppBar, Toolbar } from "@material-ui/core";
 import ReportDialog from "./Thread/ReportDialog";
 
 function onMessageSubmit(
   msg: string,
+  anon: boolean,
   threadId: number,
   commentId: number
 ): Promise<boolean> {
   ServiceApi.postComment(threadId, {
     threadId: threadId,
     parentId: commentId,
-    anonymous: true,
+    anonymous: anon,
     content: msg,
   });
   return new Promise<boolean>(() => {
@@ -124,12 +125,19 @@ function ThreadView(state: { thread: thread }) {
           return renderComments(comments, c);
         })}
       <Container fixed>
-        <WriteComment
-          submit={(msg, file) => {
-            console.log(msg, file);
-            return onMessageSubmit(msg, state.thread.id, selectedCommentId);
-          }}
-        />
+        <AppBar position="fixed" style={{ bottom: "0", top: "auto" }}>
+          <WriteComment
+            submit={(msg, anon, file) => {
+              console.log(msg, file);
+              return onMessageSubmit(
+                msg,
+                anon,
+                state.thread.id,
+                selectedCommentId
+              );
+            }}
+          />
+        </AppBar>
         {openReport && (
           <ReportDialog
             open={openReport}
