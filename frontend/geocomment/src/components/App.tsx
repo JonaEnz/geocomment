@@ -4,6 +4,8 @@ import HistoryView from "./HistoryView";
 import ThreadView from "./ThreadView";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { UserContext } from "../contexts/UserContext";
+import React from "react";
 
 const theme = createMuiTheme({
   palette: {
@@ -23,6 +25,11 @@ const theme = createMuiTheme({
 });
 
 function App() {
+  const [userCredentials, setUserCredentials] = React.useState({
+    email: "",
+    token: "",
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
@@ -51,20 +58,24 @@ function App() {
 
             {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-            <Switch>
-              <Route path="/login">
-                <LoginView />
-              </Route>
-              <Route path="/history">
-                <HistoryView />
-              </Route>
-              <Route path="/thread">
-                <ThreadView />
-              </Route>
-              <Route path="/">
-                <MapView />
-              </Route>
-            </Switch>
+            <UserContext.Provider
+              value={{ userCredentials, setUserCredentials }}
+            >
+              <Switch>
+                <Route path="/login">
+                  <LoginView />
+                </Route>
+                <Route path="/history">
+                  <HistoryView />
+                </Route>
+                <Route path="/thread">
+                  <ThreadView />
+                </Route>
+                <Route path="/">
+                  <MapView />
+                </Route>
+              </Switch>
+            </UserContext.Provider>
           </div>
         </Router>
       </div>
