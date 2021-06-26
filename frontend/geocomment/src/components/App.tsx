@@ -3,8 +3,12 @@ import MapView from "./MapView";
 import HistoryView from "./HistoryView";
 import ThreadView from "./ThreadView";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import React from "react"
+import { UserContext } from "../contexts/UserContext";
 
 function App() {
+  const [userCredentials, setUserCredentials] = React.useState({email: "", token: ""})
+
   return (
     <div className="App">
       <Router>
@@ -28,20 +32,22 @@ function App() {
 
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-          <Switch>
-            <Route path="/login">
-              <LoginView />
-            </Route>
-            <Route path="/history">
-              <HistoryView />
-            </Route>
-            <Route path="/thread">
-              <ThreadView />
-            </Route>
-            <Route path="/">
-              <MapView />
-            </Route>
-          </Switch>
+          <UserContext.Provider value={{ userCredentials, setUserCredentials}}>
+            <Switch>
+              <Route path="/login">
+                <LoginView />
+              </Route>
+              <Route path="/history">
+                <HistoryView />
+              </Route>
+              <Route path="/thread">
+                <ThreadView />
+              </Route>
+              <Route path="/">
+                <MapView />
+              </Route>
+            </Switch>
+          </UserContext.Provider>
         </div>
       </Router>
     </div>
