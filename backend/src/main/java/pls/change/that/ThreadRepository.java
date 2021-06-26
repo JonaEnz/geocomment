@@ -7,6 +7,10 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class ThreadRepository implements PanacheRepository<Thread> {
 
+    public Thread findById(Long id) {
+        return find("id", id).firstResult();
+    }
+
     public Thread findByTitle(String title) {
         return find("title", title).firstResult();
     }
