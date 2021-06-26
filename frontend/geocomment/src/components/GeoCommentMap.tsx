@@ -22,7 +22,7 @@ export function GeoCommentMap() {
     id: 42,
     title: "Test Title",
     description: "Test Description",
-    location: {lat: 49.009548, lng: 8.423551}
+    location: {lat: 49.008172, lng: 8.423980}
   }
   //end dummy code
 
@@ -32,7 +32,7 @@ export function GeoCommentMap() {
         center={location}
         zoom={18}
         scrollWheelZoom={false}
-        style={{height: 600}}
+        style={{height: 2000}}
         zoomControl={false}
         dragging={false}
         >
@@ -40,7 +40,7 @@ export function GeoCommentMap() {
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {/* <Bubble thread={thread}/> */}
+      <Bubble thread={thread}/>
       <Marker position={location} icon={navigation_icon}/>
     </MapContainer>
   );

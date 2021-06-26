@@ -1,13 +1,18 @@
 import { Icon } from "leaflet";
 import React from "react";
 import { Marker } from "react-leaflet";
-import { comment, thread } from "../api";
+import { comment, Service, thread } from "../api";
+
+import bubble_icon_blue from "../icons/bubble_icon_blue.svg";
+import bubble_icon_red from "../icons/bubble_icon_red.svg";
+import bubble_icon_yellow from "../icons/bubble_icon_yellow.svg";
+import bubble_icon_green from "../icons/bubble_icon_green.svg";
 
 export function Bubble(state: { thread: thread }) {
   const COMMENT_ID_OF_ORIGINAL_COMMENT = 0;
 
   const [visibility, setVisibily] = React.useState<boolean>(false);
-  const [icon, setIcon] = React.useState<Icon>();
+  const [icon, setIcon] = React.useState<Icon>(getBubbleIcon(0, "red"));
   const [link, setLink] = React.useState<string>();
 
   //start dummy code
@@ -18,28 +23,28 @@ export function Bubble(state: { thread: thread }) {
     votes: 16,
     content: "Hey",
   };
+
+  setTimeout(() => {
+    setIcon(getBubbleIcon(comment.votes, "blue"))
+    setLink("HelloImaLink")
+    setVisibily(true)
+  }, 10000)
   //end dummy code
 
-  //   Service.getComment(state.thread.id, COMMENT_ID_OF_ORIGINAL_COMMENT)
-  //   .then((comment: comment) => {
-  //       let icon = getBubbleIcon(comment.votes, "black"); //TODO color
-  //       setIcon(icon);
-  //       setVisibily(true);
-  //   })
-
-  //start dummy code
-  setIcon(getBubbleIcon(comment.votes, "black"));
-  setVisibily(true);
-  //end dummy code
+    // Service.getComment(state.thread.id, COMMENT_ID_OF_ORIGINAL_COMMENT)
+    // .then((comment: comment) => {
+    //     setIcon(getBubbleIcon(comment.votes, "black"));
+    //     setVisibily(true);
+    // })
 
   return (
     <Marker
       position={state.thread.location}
+      icon={icon}
       opacity={visibility ? 1 : 0}
-      icon={icon ? icon : undefined}
       eventHandlers={{
         click: (e) => {
-          console.log("marker clicked", e); //TODO
+          console.log("marker clicked", e); //TODO Weiterleitung zur jeweiligen Seite
         },
       }}
     />
@@ -47,9 +52,6 @@ export function Bubble(state: { thread: thread }) {
 }
 
 function getBubbleIcon(votes: number, color: string) {
-  const ICON_NAME_PREFIX = "../icons/bubble_icon_";
-  const ICON_NAME_POSTFIX = ".svg";
-
   const MAX_ICON_SIZE = 60;
   const MIN_ICON_SIZE = 20;
 
@@ -70,11 +72,25 @@ function getBubbleIcon(votes: number, color: string) {
       );
   }
 
-  let icon_url = ICON_NAME_PREFIX + color + ICON_NAME_POSTFIX;
+  let icon = bubble_icon_blue;
+  switch (color) {
+    case "red":
+      icon = bubble_icon_red;
+      break;
+    case "green":
+      icon = bubble_icon_green;
+      break;
+    case "yellow":
+      icon = bubble_icon_yellow;
+      break;
+    case "blue":
+      icon = bubble_icon_blue;
+      break;
+  }
 
   return new Icon({
-    iconUrl: icon_url,
-    iconRetinaUrl: icon_url,
+    iconUrl: icon,
+    iconRetinaUrl: icon,
     iconAnchor: [Math.round(icon_size / 2), Math.round(icon_size / 2)],
     popupAnchor: [Math.round(icon_size / 2), 0],
     iconSize: [icon_size, icon_size],
