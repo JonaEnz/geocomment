@@ -39,7 +39,13 @@ const DEFAULT_LEVELS = 3;
 
 function sendReport(reason: string, commentId: number, threadId: number) {
   ServiceApi.reportComment(threadId, commentId, {
-    comment: { id: commentId, threadId: threadId, parentId: 0, content: "" },
+    comment: {
+      id: commentId,
+      threadId: threadId,
+      parentId: 0,
+      content: "",
+      votes: 0,
+    },
     reason: reason,
   });
 }
