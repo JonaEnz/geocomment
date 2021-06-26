@@ -1,7 +1,34 @@
 import ThreadComment from "./Thread/Comment";
 import ThreadInfo from "./Thread/ThreadInfo";
+import WriteComment from "./Thread/WriteComment";
+import { Container } from "@material-ui/core";
+import { Service as ServiceApi } from "../api/services/Service";
+import { thread } from "../api/models/thread";
+import { useState } from "react";
 
-function ThreadView() {
+function onMessageSubmit(
+  msg: string,
+  threadId: number,
+  commentId: number
+): Promise<boolean> {
+  ServiceApi.postComment(threadId, {
+    threadId: threadId,
+    parentId: commentId,
+    anonymous: true,
+    content: msg,
+  });
+  return new Promise<boolean>(() => {
+    return false;
+  });
+}
+
+function openReport(id: number) {
+  //TODO
+  console.log("openReport(" + id + ")");
+}
+
+function ThreadView(state: { thread: thread }) {
+  const [selectedCommentId, setCommentId] = useState(0);
   var comments = [
     {
       id: 1,
@@ -22,16 +49,34 @@ function ThreadView() {
   return (
     <div>
       <ThreadInfo
-        thread={{
-          id: 1,
-          title: "Title",
-          description: "dfsah[img:http://http.cat/201]",
-          location: { lat: 1, lng: 2 },
+        thread={state.thread}
+        selectCallback={(id: number) => {
+          setCommentId(id);
+        }}
+        reportCallback={(id: number) => {
+          openReport(id);
         }}
       />
       {comments.map((c) => {
-        return <ThreadComment comment={c} />;
+        return (
+          <ThreadComment
+            comment={c}
+            selectCallback={(id: number) => {
+              setCommentId(id);
+            }}
+            reportCallback={(id: number) => {
+              openReport(id);
+            }}
+          />
+        );
       })}
+      <Container fixed>
+        <WriteComment
+          submit={(msg) => {
+            return onMessageSubmit(msg, state.thread.id, selectedCommentId);
+          }}
+        />
+      </Container>
     </div>
   );
 }

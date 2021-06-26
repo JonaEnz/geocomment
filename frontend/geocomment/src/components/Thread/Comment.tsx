@@ -47,7 +47,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function ThreadComment(state: { comment: comment }) {
+function ThreadComment(state: {
+  comment: comment;
+  selectCallback: (id: number) => void;
+  reportCallback: (id: number) => void;
+}) {
   const classes = useStyles();
 
   var reg = new RegExp(/(.*)\[img:(.*)\](.*)/g);
@@ -92,6 +96,12 @@ function ThreadComment(state: { comment: comment }) {
               alt="imagePath"
               width="250px"
               height="250px"
+              style={{
+                maxWidth: "90%",
+                maxHeight: "90%",
+                objectFit: "cover",
+                paddingBottom: "20px",
+              }}
             ></img>
           ) : (
             <p></p>
@@ -109,7 +119,11 @@ function ThreadComment(state: { comment: comment }) {
             justifyContent: "flex-end",
           }}
         >
-          <VoteButtons comment={state.comment} />
+          <VoteButtons
+            comment={state.comment}
+            reportCallback={state.reportCallback}
+            selectCallback={state.selectCallback}
+          />
         </Grid>
       </Grid>
     </Card>

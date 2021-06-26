@@ -47,11 +47,7 @@ function Login() {
   return (
     <Paper style={{ width: "300px" }}>
       <Grid justify="center" alignItems="center" direction="column">
-        <form
-          className={classes.root}
-          autoComplete="off"
-          onSubmit={(e) => submit(e)}
-        >
+        <form className={classes.root} autoComplete="off" onSubmit={submit}>
           <Grid
             container
             justify="center"

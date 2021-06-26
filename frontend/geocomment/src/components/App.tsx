@@ -73,7 +73,14 @@ function App() {
                   <HistoryView />
                 </Route>
                 <Route path="/thread">
-                  <ThreadView />
+                  <ThreadView
+                    thread={{
+                      id: 1,
+                      title: "Title",
+                      description: "dfsah[img:http://http.cat/201]",
+                      location: { lat: 1, lng: 2 },
+                    }}
+                  />
                 </Route>
                 <Route path="/register">
                   <RegisterView />
