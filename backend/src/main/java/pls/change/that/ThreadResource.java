@@ -8,36 +8,44 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/thread/")
-@Produces("application/hal+json")
-@Consumes("application/hal+json")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ThreadResource {
 
     @Inject
     ThreadRepository threadRepository;
-    @Inject
-    CommentRepository commentRepository;
+
+    @POST
+    public Thread createThread(Thread thread) {
+        threadRepository.persist(thread);
+        return thread;
+    }
 
     @GET
     @Path("{threadId}")
     public Thread getThread(@PathParam("threadId") Long tid) {
-        return threadRepository.findById(tid);
+        return getThreadOrThrow(tid);
     }
 
     @GET
     @Path("{threadId}/comments/")
     public List<Comment> getComments(@PathParam("threadId") Long tid) {
         Thread thread = getThreadOrThrow(tid);
-        return commentRepository.list("thread = ?1", thread);
+        return thread.comments;
     }
 
-/*    @POST
+    @POST
     @Path("{threadId}/comments/")
     public List<Comment> addComment(@PathParam("threadId") Long tid, Comment comment) {
         Thread thread = getThreadOrThrow(tid);
-    }*/
+        thread.comments.add(comment);
+        threadRepository.persist(thread);
+        return thread.comments;
+    }
 
     private Thread getThreadOrThrow(Long tid) {
         Thread thread = threadRepository.findById(tid);
