@@ -4,16 +4,12 @@ import {
   Paper,
   Typography,
   Grid,
-  Button,
-  Avatar,
   createStyles,
   makeStyles,
   Theme,
 } from "@material-ui/core";
 import { green, grey, red, yellow } from "@material-ui/core/colors";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import ThumbDownIcon from "@material-ui/icons/ThumbDown";
-import FlagIcon from "@material-ui/icons/Flag";
+import VoteButtons from "./VoteButtons";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,6 +38,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function ThreadInfo(state: { thread: thread }) {
   const classes = useStyles();
+  const comment = {
+    id: 0,
+    threadId: state.thread.id,
+    parentId: 0,
+    content: state.thread.title + " " + state.thread.description,
+    votes: 0,
+  };
 
   var reg = new RegExp(/(.*)\[img:(.*)\](.*)/g);
   var res: RegExpExecArray | null = reg.exec(state.thread.description);
@@ -68,7 +71,7 @@ function ThreadInfo(state: { thread: thread }) {
         {res != null ? res[3] : state.thread.description}
       </Typography>
       {res != null ? (
-        <img src={res[2]} alt="imagePath" width="200px" height="200px"></img>
+        <img src={res[2]} alt="imagePath" width="250px" height="250px"></img>
       ) : (
         <p></p>
       )}
@@ -86,21 +89,7 @@ function ThreadInfo(state: { thread: thread }) {
             paddingTop: "5px",
           }}
         >
-          <Button>
-            <Avatar className={classes.green}>
-              <ThumbUpIcon />
-            </Avatar>
-          </Button>
-          <Button>
-            <Avatar className={classes.red}>
-              <ThumbDownIcon />
-            </Avatar>
-          </Button>
-          <Button>
-            <Avatar className={classes.yellow}>
-              <FlagIcon />
-            </Avatar>
-          </Button>
+          <VoteButtons comment={comment} />
         </Grid>
         <Grid item xs={2} />
       </Grid>

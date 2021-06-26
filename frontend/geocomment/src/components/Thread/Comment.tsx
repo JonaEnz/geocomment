@@ -15,6 +15,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import { green, grey, red, yellow } from "@material-ui/core/colors";
+import { comment } from "../../api";
+import VoteButtons from "./VoteButtons";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,16 +40,24 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: grey[900],
       color: yellow[500],
     },
+    grey: {
+      backgroundColor: grey[900],
+      color: grey[100],
+    },
   })
 );
 
-function ThreadComment(state: { comment: { comment: string; votes: number } }) {
+function ThreadComment(state: { comment: comment }) {
   const classes = useStyles();
+
+  var reg = new RegExp(/(.*)\[img:(.*)\](.*)/g);
+  var res: RegExpExecArray | null = reg.exec(state.comment.content);
+
   return (
     <Card
       style={{
         width: "900px",
-        maxWidth: "75%",
+        maxWidth: "90%",
         padding: "10px",
         margin: "15px",
       }}
@@ -76,8 +86,19 @@ function ThreadComment(state: { comment: { comment: string; votes: number } }) {
             paddingLeft: "10px",
           }}
         >
+          {res != null ? (
+            <img
+              src={res[2]}
+              alt="imagePath"
+              width="250px"
+              height="250px"
+            ></img>
+          ) : (
+            <p></p>
+          )}
           <Typography variant="body1" style={{ wordWrap: "break-word" }}>
-            {state.comment.comment}
+            {res != null ? res[1] : ""}
+            {res != null ? res[3] : state.comment.content}
           </Typography>
         </Grid>
         <Grid
@@ -88,21 +109,7 @@ function ThreadComment(state: { comment: { comment: string; votes: number } }) {
             justifyContent: "flex-end",
           }}
         >
-          <Button>
-            <Avatar className={classes.green}>
-              <ThumbUpIcon />
-            </Avatar>
-          </Button>
-          <Button>
-            <Avatar className={classes.red}>
-              <ThumbDownIcon />
-            </Avatar>
-          </Button>
-          <Button>
-            <Avatar className={classes.yellow}>
-              <FlagIcon />
-            </Avatar>
-          </Button>
+          <VoteButtons comment={state.comment} />
         </Grid>
       </Grid>
     </Card>

@@ -4,14 +4,20 @@ import ThreadInfo from "./Thread/ThreadInfo";
 function ThreadView() {
   var comments = [
     {
-      comment:
+      id: 1,
+      threadId: 100,
+      parentId: 0,
+      content:
         "Testerhfsdgghbfsgfsidgfdhgfdsgfgsgsdgdgsdssdgdgsgdfkahevhgfghahgdakgkhdgfghfkhdagfg",
       votes: 5,
     },
-    { comment: "Test", votes: 5 },
-    { comment: "Test", votes: 5 },
-    { comment: "Test", votes: 5 },
-    { comment: "Test", votes: 5 },
+    {
+      id: 2,
+      threadId: 100,
+      parentId: 0,
+      content: "dfsah[img:http://http.cat/201]",
+      votes: 3,
+    },
   ];
   return (
     <div>

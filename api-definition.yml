@@ -68,6 +68,9 @@ components:
           description: "if anonymous a number unique to a user in a thread, else the userid"
           type: integer
           format: int64
+        threadId:
+          type: integer
+          format: int64
         anonymous:
           type: boolean
         content:
