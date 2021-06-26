@@ -3,11 +3,11 @@
 /* eslint-disable */
 
 export type newComment = {
-    parentId?: number;
+    parentId: number;
     /**
      * if anonymous a number unique to a user in a thread, else the userid
      */
     authorId?: number;
-    content?: string;
-    created_at?: number;
+    anonymous?: boolean;
+    content: string;
 }

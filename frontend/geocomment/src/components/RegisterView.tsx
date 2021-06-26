@@ -8,6 +8,9 @@ import Lock from "@material-ui/icons/Lock";
 import { useUserContext } from "../contexts/UserContext";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 import { Service as ApiService } from "../api/services/Service";
 
 const useStyles = makeStyles((theme) => ({
@@ -19,20 +22,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LoginView() {
+function RegisterView() {
   const { userCredentials, setUserCredentials } = useUserContext();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [privateAcc, setPrivate] = useState<boolean>(false);
 
   const classes = useStyles();
 
   function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    ApiService.login({ email: username, password: password }).then(
-      (resp) => {
-        console.log(resp);
-        setUserCredentials({ email: username, token: resp.token });
+    ApiService.register({
+      email: username,
+      password: password,
+      private: privateAcc,
+    }).then(
+      () => {
+        ApiService.login({ email: username, password: password }).then((r) => {
+          setUserCredentials({ email: username, token: r.token });
+        });
       },
       (error) => {
         console.log(error);
@@ -42,7 +51,7 @@ function LoginView() {
 
   return (
     <div>
-      <h1>LoginView</h1>
+      <h1>Register View</h1>
       <h3>email: {userCredentials.email}</h3>
       <h3>token: {userCredentials.token}</h3>
       <Grid container justify="center">
@@ -90,20 +99,34 @@ function LoginView() {
                     ),
                   }}
                 />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  endIcon={<VpnKeyIcon />}
-                  type="submit"
-                  onClick={() =>
-                    setUserCredentials({
-                      email: "max.mustermann@gmail.com",
-                      token: "2dg638d3928h9283hd",
-                    })
-                  }
-                >
-                  login
-                </Button>
+                <FormGroup row>
+                  <FormControlLabel
+                    label="private"
+                    control={
+                      <Checkbox
+                        checked={privateAcc}
+                        onChange={(e) => setPrivate(e.target.checked)}
+                        name="private"
+                      />
+                    }
+                  />
+                </FormGroup>
+                <FormGroup row>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    endIcon={<VpnKeyIcon />}
+                    type="submit"
+                    onClick={() =>
+                      setUserCredentials({
+                        email: "max.mustermann@gmail.com",
+                        token: "2dg638d3928h9283hd",
+                      })
+                    }
+                  >
+                    login
+                  </Button>
+                </FormGroup>
               </Grid>
             </form>
           </Grid>
@@ -113,4 +136,4 @@ function LoginView() {
   );
 }
 
-export default LoginView;
+export default RegisterView;

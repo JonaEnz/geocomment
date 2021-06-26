@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { UserContext } from "../contexts/UserContext";
 import React from "react";
+import RegisterView from "./RegisterView";
 
 const theme = createMuiTheme({
   palette: {
@@ -53,6 +54,9 @@ function App() {
                 <li>
                   <Link to="/thread">ThreadView</Link>
                 </li>
+                <li>
+                  <Link to="/register">RegisterView</Link>
+                </li>
               </ul>
             </nav>
 
@@ -70,6 +74,9 @@ function App() {
                 </Route>
                 <Route path="/thread">
                   <ThreadView />
+                </Route>
+                <Route path="/register">
+                  <RegisterView />
                 </Route>
                 <Route path="/">
                   <MapView />

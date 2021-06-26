@@ -3,6 +3,6 @@
 /* eslint-disable */
 
 export type location = {
-    lat?: number;
-    lng?: number;
+    lat: number;
+    lng: number;
 }

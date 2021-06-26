@@ -4,4 +4,6 @@
 
 import type { newThread } from './newThread';
 
-export type thread = newThread;
+export type thread = (newThread & {
+id: number,
+});

@@ -7,5 +7,5 @@ import type { newComment } from './newComment';
 export type comment = (newComment & {
 id: number,
 votes?: number,
-anonymous?: boolean,
+created_at?: number,
 });
