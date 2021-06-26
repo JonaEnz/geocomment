@@ -1,14 +1,17 @@
-openapi: "3.0.2"
+openapi: 3.0.2
 info:
   title: API Title
   version: "1.0"
 servers:
-  - url: https://api.server.test/v1
-
+  - url: "https://api.server.test/v1"
 components:
   schemas:
     newThread:
       type: object
+      required:
+        - title
+        - description
+        - location
       properties:
         title:
           type: string
@@ -17,7 +20,7 @@ components:
         type:
           type: string
         authorId:
-          description: if anonymous a number unique to a user in a thread, else the userid
+          description: "if anonymous a number unique to a user in a thread, else the userid"
           type: integer
           format: int32
         anonymous:
@@ -28,16 +31,18 @@ components:
       type: object
       allOf:
         - $ref: "#/components/schemas/newThread"
-        - properties:
+        - type: object
+          required:
+            - id
+          properties:
             id:
               type: integer
               format: int32
-            votes:
-              type: integer
-              format: int32
-
     location:
       type: object
+      required:
+        - lat
+        - lng
       properties:
         lat:
           type: number
@@ -47,20 +52,23 @@ components:
           format: float
     newComment:
       type: object
+      required:
+        - parentId
+        - content
       properties:
         parentId:
           type: integer
           format: int64
         authorId:
-          description: if anonymous a number unique to a user in a thread, else the userid
+          description: "if anonymous a number unique to a user in a thread, else the userid"
           type: integer
           format: int64
+        anonymous:
+          type: boolean
         content:
           type: string
-        created_at:
-          type: number
-          format: timestamp
     comment:
+      type: object
       allOf:
         - $ref: "#/components/schemas/newComment"
         - type: object
@@ -73,9 +81,13 @@ components:
             votes:
               type: integer
               format: int32
-            anonymous:
-              type: boolean
+            created_at:
+              type: number
+              format: timestamp
     user:
+      type: object
+      required:
+        - id
       properties:
         id:
           type: integer
@@ -93,19 +105,21 @@ components:
         joined_at:
           type: integer
           format: timestamp
-
     newReport:
+      type: object
+      required:
+        - reason
+        - comment
       properties:
         comment:
-          type: object
           $ref: "#/components/schemas/comment"
         userId:
           type: integer
           format: int64
         reason:
           type: string
-
     report:
+      type: object
       allOf:
         - $ref: "#/components/schemas/newReport"
         - type: object
@@ -117,22 +131,30 @@ components:
               format: int64
             handled:
               type: boolean
-
     login:
+      type: object
+      required:
+        - email
+        - password
       properties:
         email:
           type: string
         password:
           type: string
+          format: password
     register:
+      type: object
+      required:
+        - email
+        - password
       properties:
         email:
           type: string
         password:
           type: string
+          format: password
         private:
           type: boolean
-
 paths:
   /threads:
     get:
@@ -157,7 +179,7 @@ paths:
             type: number
             format: float
       responses:
-        default:
+        "200":
           description: OK
           content:
             application/json:
@@ -165,8 +187,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/thread"
-
-  /thread/{threadId}:
+  "/thread/{threadId}":
     get:
       summary: Returns thread with given id
       parameters:
@@ -187,7 +208,6 @@ paths:
           description: unauthorized
         "404":
           description: not found
-
   /thread/:
     post:
       summary: Create new thread
@@ -205,8 +225,7 @@ paths:
                 $ref: "#/components/schemas/thread"
         "401":
           description: unauthorized
-
-  /thread/{threadId}/comments:
+  "/thread/{threadId}/comments":
     get:
       summary: Get comments in thread
       parameters:
@@ -221,7 +240,8 @@ paths:
           description: Maximum level of subcomments
           in: query
           schema:
-            type: string
+            type: integer
+            format: int32
       responses:
         "200":
           description: OK
@@ -254,7 +274,7 @@ paths:
                 $ref: "#/components/schemas/comment"
         default:
           description: failure
-  /thread/{threadId}/comments/{commentId}:
+  "/thread/{threadId}/comments/{commentId}":
     get:
       summary: Get single comment
       parameters:
@@ -279,8 +299,7 @@ paths:
                 $ref: "#/components/schemas/comment"
         "401":
           description: unauthorized
-
-  /thread/{threadId}/comments/{commentId}/vote:
+  "/thread/{threadId}/comments/{commentId}/vote":
     post:
       summary: Submit vote on comment (or 0 for thread)
       parameters:
@@ -297,7 +316,7 @@ paths:
             type: integer
             format: int64
         - name: vote
-          description: true for upvote, flase for downvote
+          description: "true for upvote, flase for downvote"
           required: true
           in: query
           schema:
@@ -307,7 +326,7 @@ paths:
           description: OK
         default:
           description: Failure
-  /thread/{threadId}/comments/{commentId}/delete:
+  "/thread/{threadId}/comments/{commentId}/delete":
     post:
       summary: Delete own comment
       parameters:
@@ -324,12 +343,11 @@ paths:
             type: integer
             format: int64
       responses:
-        default:
-          description: OK
         "401":
           description: unauthorized
-
-  /thread/{threadId}/comments/{commentId}/report:
+        default:
+          description: OK
+  "/thread/{threadId}/comments/{commentId}/report":
     post:
       summary: Report comment to admins
       parameters:
@@ -355,8 +373,7 @@ paths:
           description: OK
         default:
           description: failure
-
-  /thread/{threadId}/comments/{commentId}/children:
+  "/thread/{threadId}/comments/{commentId}/children":
     get:
       summary: Get subcomments for this comment
       parameters:
@@ -390,8 +407,7 @@ paths:
                   $ref: "#/components/schemas/comment"
         "404":
           description: not found
-
-  /user/{userId}:
+  "/user/{userId}":
     get:
       summary: Get information about a user
       parameters:
@@ -401,7 +417,6 @@ paths:
           schema:
             type: integer
             format: int64
-
       responses:
         "200":
           description: OK
@@ -411,8 +426,7 @@ paths:
                 $ref: "#/components/schemas/user"
         "401":
           description: unauthorized
-
-  /user/{userId}/comments:
+  "/user/{userId}/comments":
     get:
       summary: Get last comments by a user
       parameters:
@@ -468,7 +482,6 @@ paths:
                           $ref: "#/components/schemas/thread"
         default:
           description: failure
-
   /admin/reports:
     get:
       summary: Get reports (only unhandled by default)
@@ -487,7 +500,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/report"
-  /admin/reports/{reportId}:
+  "/admin/reports/{reportId}":
     post:
       summary: Handle report
       parameters:
@@ -498,11 +511,12 @@ paths:
             type: integer
             format: int64
         - name: action
-          description: enum (ban, ignore)
+          description: "decision for report"
           required: true
           in: query
           schema:
             type: string
+            enum: [ban, ignore]
       responses:
         "200":
           description: OK
@@ -512,7 +526,7 @@ paths:
           description: not found
         default:
           description: failure
-  /admin/ban/{userId}:
+  "/admin/ban/{userId}":
     post:
       summary: Ban user for a specific time
       parameters:
@@ -523,7 +537,7 @@ paths:
             type: integer
             format: int64
         - name: time
-          description: Time in seconds, 0 = infinite
+          description: "Time in seconds, 0 = infinite"
           required: true
           in: query
           schema:
@@ -546,9 +560,9 @@ paths:
           description: unauthorized
         default:
           description: failure
-
   /login:
     post:
+      summary: login with email address and password
       requestBody:
         content:
           application/json:
@@ -563,11 +577,12 @@ paths:
                 properties:
                   token:
                     type: string
+                    format: byte
         default:
           description: failure
-
   /register:
     post:
+      summary: create a new account
       requestBody:
         content:
           application/json:
@@ -584,19 +599,46 @@ paths:
                   - properties:
                       token:
                         type: string
+                        format: byte
         default:
           description: failure
   /images/upload:
     post:
+      summary: upload a new image with a commentId  (0 = thread) and threadId
       requestBody:
         content:
           multipart/form-data:
             schema:
               properties:
-                todo:
+                threadId:
+                  type: integer
+                  format: int64
+                commentId:
+                  type: integer
+                  format: int64
+                image:
                   type: string
+                  format: binary
+            encoding:
+              image:
+                contentType: image/png, image/jpeg
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  threadId:
+                    type: integer
+                    format: int64
+                  commentId:
+                    type: integer
+                    format: int64
+                  id:
+                    type: integer
+                    format: int32
+                  url:
+                    type: string
         default:
           description: failure
