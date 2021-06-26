@@ -2,11 +2,10 @@ import { Icon, latLng } from "leaflet";
 import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { useLocation } from "../contexts/LocationContext";
-import { setSourceMapRange } from "typescript";
-import { location } from "../api";
 import { LocationTracer } from "./LocationTracer";
-
 import nav_icon from '../icons/navigation_black_24dp.svg'
+import { thread } from "../api";
+import { Bubble } from "./Bubble";
 
 export function GeoCommentMap() {
   const {location, setLocation} = useLocation()
@@ -17,6 +16,17 @@ export function GeoCommentMap() {
     popupAnchor: [30, 0],
     iconSize: [60, 60],
   })
+  
+  //start dummy code
+  const thread: thread = {
+    id: 42,
+    title: "Test Title",
+    description: "Test Description",
+    location: {lat: 49.009548, lng: 8.423551}
+  }
+  //end dummy code
+
+
   return (
     <MapContainer
         center={location}
@@ -30,6 +40,7 @@ export function GeoCommentMap() {
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+      {/* <Bubble thread={thread}/> */}
       <Marker position={location} icon={navigation_icon}/>
     </MapContainer>
   );
