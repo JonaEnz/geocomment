@@ -17,8 +17,11 @@ components:
         type:
           type: string
         authorId:
+          description: if anonymous a number unique to a user in a thread, else the userid
           type: integer
           format: int32
+        anonymous:
+          type: boolean
         location:
           $ref: "#/components/schemas/location"
     thread:
@@ -49,6 +52,7 @@ components:
           type: integer
           format: int64
         authorId:
+          description: if anonymous a number unique to a user in a thread, else the userid
           type: integer
           format: int64
         content:
@@ -69,6 +73,8 @@ components:
             votes:
               type: integer
               format: int32
+            anonymous:
+              type: boolean
     user:
       properties:
         id:
@@ -78,6 +84,13 @@ components:
           type: boolean
         banUntil:
           description: Banned until (0 = infinite)
+          type: integer
+          format: timestamp
+        private:
+          type: boolean
+        admin:
+          type: boolean
+        joined_at:
           type: integer
           format: timestamp
 
@@ -104,6 +117,21 @@ components:
               format: int64
             handled:
               type: boolean
+
+    login:
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    register:
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        private:
+          type: boolean
 
 paths:
   /threads:
@@ -171,6 +199,10 @@ paths:
       responses:
         "201":
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/thread"
         "401":
           description: unauthorized
 
@@ -216,6 +248,12 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/comment"
+        default:
+          description: failure
   /thread/{threadId}/comments/{commentId}:
     get:
       summary: Get single comment
@@ -506,5 +544,59 @@ paths:
           description: OK
         "401":
           description: unauthorized
+        default:
+          description: failure
+
+  /login:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/login"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  token:
+                    type: string
+        default:
+          description: failure
+
+  /register:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/register"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/user"
+                  - properties:
+                      token:
+                        type: string
+        default:
+          description: failure
+  /images/upload:
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                todo:
+                  type: string
+      responses:
+        "200":
+          description: OK
         default:
           description: failure
