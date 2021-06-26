@@ -56,7 +56,7 @@ function ThreadComment(state: { comment: { comment: string; votes: number } }) {
       <Grid container direction="row">
         <Grid
           item
-          xs={1}
+          xs={2}
           style={{
             flexDirection: "column",
             justifyContent: "center",
@@ -67,7 +67,7 @@ function ThreadComment(state: { comment: { comment: string; votes: number } }) {
         </Grid>
         <Grid
           item
-          xs={7}
+          xs={10}
           style={{
             flexDirection: "column",
             justifyContent: "center",
@@ -82,11 +82,10 @@ function ThreadComment(state: { comment: { comment: string; votes: number } }) {
         </Grid>
         <Grid
           item
-          xs={4}
+          xs={12}
           style={{
             display: "flex",
             justifyContent: "flex-end",
-            flexWrap: "wrap",
           }}
         >
           <Button>
