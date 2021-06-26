@@ -9,7 +9,6 @@ import java.util.UUID;
 @Entity
 public class Comment {
     @Id @GeneratedValue public Long id;
-    public Long parentId;
     public UUID authorId;
     public String content;
     public LocalDateTime timestamp;

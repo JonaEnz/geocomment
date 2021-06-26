@@ -3,7 +3,8 @@ package pls.change.that;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 public class Thread {
@@ -11,6 +12,6 @@ public class Thread {
     @GeneratedValue
     public Long id;
     public String title;
-    @OneToOne
-    public Comment initialComment;
+    @OneToMany
+    public List<Comment> comments;
 }
