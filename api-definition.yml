@@ -5,6 +5,11 @@ info:
 servers:
   - url: "https://api.server.test/v1"
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     newThread:
       type: object
@@ -211,6 +216,8 @@ paths:
   /thread/:
     post:
       summary: Create new thread
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -253,6 +260,8 @@ paths:
                   $ref: "#/components/schemas/comment"
     post:
       summary: Create new top level comment
+      security:
+        - bearerAuth: []
       parameters:
         - name: threadId
           required: true
@@ -302,6 +311,8 @@ paths:
   "/thread/{threadId}/comments/{commentId}/vote":
     post:
       summary: Submit vote on comment (or 0 for thread)
+      security:
+        - bearerAuth: []
       parameters:
         - name: threadId
           required: true
@@ -329,6 +340,8 @@ paths:
   "/thread/{threadId}/comments/{commentId}/delete":
     post:
       summary: Delete own comment
+      security:
+        - bearerAuth: []
       parameters:
         - name: threadId
           required: true
@@ -350,6 +363,8 @@ paths:
   "/thread/{threadId}/comments/{commentId}/report":
     post:
       summary: Report comment to admins
+      security:
+        - bearerAuth: []
       parameters:
         - name: threadId
           required: true
@@ -460,6 +475,8 @@ paths:
   /user/me/comments:
     get:
       summary: Get own comments
+      security:
+        - bearerAuth: []
       parameters:
         - name: top
           in: query
@@ -485,6 +502,8 @@ paths:
   /admin/reports:
     get:
       summary: Get reports (only unhandled by default)
+      security:
+        - bearerAuth: []
       parameters:
         - name: all
           in: query
@@ -503,6 +522,8 @@ paths:
   "/admin/reports/{reportId}":
     post:
       summary: Handle report
+      security:
+        - bearerAuth: []
       parameters:
         - name: reportId
           required: true
@@ -529,6 +550,8 @@ paths:
   "/admin/ban/{userId}":
     post:
       summary: Ban user for a specific time
+      security:
+        - bearerAuth: []
       parameters:
         - name: userId
           required: true
@@ -605,6 +628,8 @@ paths:
   /images/upload:
     post:
       summary: upload a new image with a commentId  (0 = thread) and threadId
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           multipart/form-data:

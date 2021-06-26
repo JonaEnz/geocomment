@@ -13,8 +13,9 @@ Header {
 
 ```json
 Payload {
-"sub": userId
-"admin": false
+"sub": userId,
+"admin": false,
+"iat": 9999999
 }
 ```
 
