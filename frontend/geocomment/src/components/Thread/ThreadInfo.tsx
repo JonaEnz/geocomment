@@ -40,6 +40,7 @@ function ThreadInfo(state: {
   thread: thread;
   selectCallback: (id: number) => void;
   reportCallback: (id: number) => void;
+  selected?: boolean;
 }) {
   const classes = useStyles();
   const comment = {
@@ -112,6 +113,7 @@ function ThreadInfo(state: {
             reportCallback={(id: number) => {
               state.reportCallback(0);
             }}
+            selected={state.selected}
           />
         </Grid>
         <Grid item xs={2} />

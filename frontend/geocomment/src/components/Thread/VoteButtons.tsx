@@ -58,6 +58,10 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: grey[900],
       color: blue[400],
     },
+    selected: {
+      backgroundColor: blue[400],
+      color: grey[900],
+    },
     grey: {
       backgroundColor: grey[900],
       color: grey[100],
@@ -69,6 +73,7 @@ function VoteButtons(state: {
   comment: comment;
   reportCallback: (id: number) => void;
   selectCallback: (id: number) => void;
+  selected?: boolean;
 }) {
   const [upvoted, setUpvoted] = useState(false);
   const [downvoted, setDownvoted] = useState(false);
@@ -118,7 +123,11 @@ function VoteButtons(state: {
           state.selectCallback(state.comment.id);
         }}
       >
-        <Avatar className={classes.lightblue}>
+        <Avatar
+          className={
+            state.selected !== true ? classes.lightblue : classes.selected
+          }
+        >
           <AddCommentIcon />
         </Avatar>
       </Button>

@@ -7,7 +7,7 @@ import { thread } from "../api/models/thread";
 import { useState } from "react";
 import { comment } from "../api";
 import { threadId } from "worker_threads";
-import { Grid, AppBar, Toolbar } from "@material-ui/core";
+import { Grid, AppBar, Toolbar, Paper } from "@material-ui/core";
 import ReportDialog from "./Thread/ReportDialog";
 
 function onMessageSubmit(
@@ -97,6 +97,7 @@ function ThreadView(state: { thread: thread }) {
             setReportId(id);
             setOpenReport(true);
           }}
+          selected={comment.id === selectedCommentId}
         />
         <Grid style={{ marginLeft: "50px" }}>
           {children.map((child2) => {
@@ -118,6 +119,7 @@ function ThreadView(state: { thread: thread }) {
           setReportId(id);
           setOpenReport(true);
         }}
+        selected={selectedCommentId === 0}
       />
       {comments
         .filter((c) => c.parentId === 0)
