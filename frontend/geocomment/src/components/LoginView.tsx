@@ -9,6 +9,7 @@ import { useUserContext } from "../contexts/UserContext";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import { Service as ApiService } from "../api/services/Service";
+import { OpenAPI } from "../api";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +34,8 @@ function LoginView() {
       (resp) => {
         console.log(resp);
         setUserCredentials({ email: username, token: resp.token });
+        OpenAPI.WITH_CREDENTIALS = true;
+        OpenAPI.TOKEN = resp.token;
       },
       (error) => {
         console.log(error);

@@ -12,6 +12,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Service as ApiService } from "../api/services/Service";
+import { OpenAPI } from "../api";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +42,8 @@ function RegisterView() {
       () => {
         ApiService.login({ email: username, password: password }).then((r) => {
           setUserCredentials({ email: username, token: r.token });
+          OpenAPI.WITH_CREDENTIALS = true;
+          OpenAPI.TOKEN = r.token;
         });
       },
       (error) => {
@@ -57,11 +60,7 @@ function RegisterView() {
       <Grid container justify="center">
         <Paper style={{ width: "300px" }}>
           <Grid justify="center" alignItems="center" direction="column">
-            <form
-              className={classes.root}
-              autoComplete="off"
-              onSubmit={(e) => submit(e)}
-            >
+            <form autoComplete="off" onSubmit={(e) => submit(e)}>
               <Grid
                 container
                 justify="center"
