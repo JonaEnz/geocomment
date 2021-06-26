@@ -34,6 +34,7 @@ function LoginView() {
     Service.postService7({ email: username, password: password }).then(
       (resp) => {
         console.log(resp);
+        setUserCredentials({ email: username, token: resp.token });
       },
       (error) => {
         console.log(error);
