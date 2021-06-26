@@ -13,6 +13,7 @@ val quarkusPlatformArtifactId: String by project
 val quarkusPlatformVersion: String by project
 
 dependencies {
+    implementation("io.quarkus:quarkus-smallrye-jwt")
     implementation("io.quarkus:quarkus-jdbc-mysql")
     implementation("io.quarkus:quarkus-hibernate-orm-rest-data-panache")
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
