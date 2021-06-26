@@ -5,26 +5,36 @@ import {
   InputBase,
   Divider,
   IconButton,
+  Button,
   FormControl,
   Grid,
 } from "@material-ui/core";
-import { RateReview as RateReviewIcon } from "@material-ui/icons";
+import {
+  RateReview as RateReviewIcon,
+  AddAPhoto as AddAPhotoIcon,
+} from "@material-ui/icons";
+import { AnyARecord } from "dns";
 
 function WriteComment(state: {
-  submit: (message: string) => Promise<boolean>;
+  submit: (message: string, file: object) => Promise<boolean>;
 }) {
   const [msg, setMsg] = useState("");
   const [error, setError] = useState(false);
+  const [getFile, setFile] = useState<object>({});
 
-  function submit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    e.stopPropagation();
-    state.submit(msg).then((r) => {
+  function submit() {
+    state.submit(msg, getFile).then((r) => {
       setMsg("");
       if (!r) {
         setError(true);
       }
     });
+    setFile({});
+  }
+
+  function onFileChange(event: any) {
+    setFile(event.target.files[0]);
+    console.log(typeof event.target.files[0]);
   }
 
   return (
@@ -33,9 +43,20 @@ function WriteComment(state: {
         <form onSubmit={submit} style={{ width: "100%" }}>
           <FormControl style={{ width: "100%" }}>
             <Grid container>
+              <input
+                onChange={onFileChange}
+                style={{ display: "none" }}
+                id="fileUpload"
+                type="file"
+              />
+              <label htmlFor="fileUpload">
+                <Button component="span" style={{}}>
+                  <AddAPhotoIcon />
+                </Button>
+              </label>
               <TextField
                 multiline={true}
-                style={{ width: "70%" }}
+                style={{ width: "70%", padding: "3px", paddingLeft: "7px" }}
                 placeholder="Input Comment"
                 value={msg}
                 onChange={(s) => {
@@ -47,7 +68,9 @@ function WriteComment(state: {
               />
               {/* <Divider orientation="vertical" /> */}
               <IconButton
-                type="submit"
+                onClick={() => {
+                  submit();
+                }}
                 aria-label="submit"
                 style={{
                   maxWidth: "20%",

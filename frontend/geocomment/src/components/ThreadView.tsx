@@ -8,6 +8,7 @@ import { useState } from "react";
 import { comment } from "../api";
 import { threadId } from "worker_threads";
 import { Grid } from "@material-ui/core";
+import ReportDialog from "./Thread/ReportDialog";
 
 function onMessageSubmit(
   msg: string,
@@ -25,15 +26,20 @@ function onMessageSubmit(
   });
 }
 
-function openReport(id: number) {
-  //TODO
-  console.log("openReport(" + id + ")");
-}
-
 const DEFAULT_LEVELS = 3;
+
+function sendReport(reason: string, commentId: number, threadId: number) {
+  ServiceApi.reportComment(threadId, commentId, {
+    comment: { id: commentId, threadId: threadId, parentId: 0, content: "" },
+    reason: reason,
+  });
+}
 
 function ThreadView(state: { thread: thread }) {
   const [selectedCommentId, setCommentId] = useState(0);
+  const [reportCommentId, setReportId] = useState(0);
+  const [getFile, setFile] = useState();
+  const [openReport, setOpenReport] = useState(false);
   const [comments, setComments] = useState([
     {
       id: 1,
@@ -87,7 +93,8 @@ function ThreadView(state: { thread: thread }) {
             setCommentId(id);
           }}
           reportCallback={(id: number) => {
-            openReport(id);
+            setReportId(id);
+            setOpenReport(true);
           }}
         />
         <Grid style={{ marginLeft: "50px" }}>
@@ -107,31 +114,31 @@ function ThreadView(state: { thread: thread }) {
           setCommentId(id);
         }}
         reportCallback={(id: number) => {
-          openReport(id);
+          setReportId(id);
+          setOpenReport(true);
         }}
       />
       {comments
         .filter((c) => c.parentId === 0)
         .map((c) => {
           return renderComments(comments, c);
-          //   return (
-          //     <ThreadComment
-          //       comment={c}
-          //       selectCallback={(id: number) => {
-          //         setCommentId(id);
-          //       }}
-          //       reportCallback={(id: number) => {
-          //         openReport(id);
-          //       }}
-          //     />
-          //   );
         })}
       <Container fixed>
         <WriteComment
-          submit={(msg) => {
+          submit={(msg, file) => {
+            console.log(msg, file);
             return onMessageSubmit(msg, state.thread.id, selectedCommentId);
           }}
         />
+        {openReport && (
+          <ReportDialog
+            open={openReport}
+            callback={(r) => {
+              sendReport(r, reportCommentId, state.thread.id);
+              setOpenReport(false);
+            }}
+          />
+        )}
       </Container>
     </div>
   );
