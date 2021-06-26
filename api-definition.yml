@@ -604,6 +604,9 @@ paths:
             application/json:
               schema:
                 properties:
+                  userid:
+                    type: number
+                    format: int64
                   token:
                     type: string
                     format: byte

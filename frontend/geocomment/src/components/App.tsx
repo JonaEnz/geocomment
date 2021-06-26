@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme) =>
 function App() {
   const [userCredentials, setUserCredentials] = React.useState({
     email: "",
+    userid: 0,
     token: "",
   });
 
