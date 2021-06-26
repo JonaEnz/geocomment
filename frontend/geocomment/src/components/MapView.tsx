@@ -1,5 +1,5 @@
 function MapView() {
-    return <h1>MapView</h1>
+  return <h1>MapView</h1>;
 }
 
-export default MapView
+export default MapView;
