@@ -100,8 +100,8 @@ components:
               enum: ["none", "downvote", "upvote"]
 
             created_at:
-              type: number
-              format: timestamp
+              type: string
+              format: date-time
     user:
       type: object
       required:
@@ -114,15 +114,15 @@ components:
           type: boolean
         banUntil:
           description: Banned until (0 = infinite)
-          type: integer
-          format: timestamp
+          type: string
+          format: date-time
         private:
           type: boolean
         admin:
           type: boolean
         joined_at:
-          type: integer
-          format: timestamp
+          type: string
+          format: date-time
     newReport:
       type: object
       required:
@@ -587,8 +587,8 @@ paths:
                 reason:
                   type: string
                 until:
-                  type: integer
-                  format: timestamp
+                  type: string
+                  format: date-time
       responses:
         "200":
           description: OK
