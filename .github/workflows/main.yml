@@ -45,6 +45,12 @@ jobs:
         run: npm run build
         env: 
           CI: false
+          
+      - name: Test
+        run: echo "$SUPER_SECRET"
+        env:
+          SUPER_SECRET: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+      
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
