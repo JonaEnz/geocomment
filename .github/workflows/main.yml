@@ -48,9 +48,8 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          token: ${github-token}
+          token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
           branch: gh-pages
           folder: frontend/geocomment/build
         env:
           CI: false
-          github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
