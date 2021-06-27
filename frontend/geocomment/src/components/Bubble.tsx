@@ -7,11 +7,18 @@ import bubble_icon_blue from "../icons/bubble_icon_blue.svg";
 import bubble_icon_red from "../icons/bubble_icon_red.svg";
 import bubble_icon_yellow from "../icons/bubble_icon_yellow.svg";
 import bubble_icon_green from "../icons/bubble_icon_green.svg";
+import { useHistory } from "react-router-dom";
 
-export function Bubble(state: { thread: thread }) {
+export type BubbleProps = {
+  thread: thread,
+  children?: JSX.Element
+}
+
+export function Bubble(props: BubbleProps) {
   const COMMENT_ID_OF_ORIGINAL_COMMENT = 0;
 
   const [visibility, setVisibily] = React.useState<boolean>(false);
+  let browser_history = useHistory()
   const [icon, setIcon] = React.useState<Icon>(getBubbleIcon(0, "red"));
   const [link, setLink] = React.useState<string>();
 
@@ -40,12 +47,12 @@ export function Bubble(state: { thread: thread }) {
 
   return (
     <Marker
-      position={state.thread.location}
+      position={props.thread.location}
       icon={icon}
       opacity={visibility ? 1 : 0}
       eventHandlers={{
         click: (e) => {
-          console.log("marker clicked", e); //TODO Weiterleitung zur jeweiligen Seite
+          browser_history.push("/thread") //TODO Weiterleitung zur jeweiligen Seite
         },
       }}
     />
