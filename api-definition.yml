@@ -92,6 +92,10 @@ components:
             votes:
               type: integer
               format: int32
+            myvote:
+              type: string
+              enum: ["none", "downvote", "upvote"]
+
             created_at:
               type: number
               format: timestamp

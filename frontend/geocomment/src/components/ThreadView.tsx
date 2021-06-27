@@ -135,11 +135,14 @@ function ThreadView(state: { thread: thread }) {
         }}
         selected={selectedCommentId === 0}
       />
-      {comments
-        .filter((c) => c.parentId === 0)
-        .map((c) => {
-          return renderComments(comments, c);
-        })}
+      <div>
+        {comments
+          .filter((c) => c.parentId === 0)
+          .map((c) => {
+            return renderComments(comments, c);
+          })}
+        <div style={{ paddingTop: "50px" }}></div>
+      </div>
       <Container fixed>
         <AppBar position="fixed" style={{ bottom: "0", top: "auto" }}>
           <WriteComment
