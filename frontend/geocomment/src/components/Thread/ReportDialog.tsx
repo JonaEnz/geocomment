@@ -50,7 +50,13 @@ function ReportDialog(props: {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button
+            onClick={() => {
+              props.callback("reason");
+              handleClose();
+            }}
+            color="primary"
+          >
             Cancel
           </Button>
           <Button
