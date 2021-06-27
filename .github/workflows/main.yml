@@ -45,17 +45,10 @@ jobs:
         run: npm run build
         env: 
           CI: false
-          
-      - name: Test
-        run: echo "$SUPER_SECRET"
-        env:
-          SUPER_SECRET: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
       
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@4.1.4
-        with:
-          token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
-          branch: gh-pages
-          folder: frontend/geocomment/build
+      - name: Deploy to GitHub Pages
+        uses: Cecilapp/GitHub-Pages-deploy@master
         env:
-          CI: false
+          EMAIL: uhock@student.kit.edu
+          GH_TOKEN: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+          BUILD_DIR: ./frontend/geocomment/build
