@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/geocomment/static/css/main.520acae7.chunk.css",
+    "main.js": "/geocomment/static/js/main.e44bb982.chunk.js",
+    "main.js.map": "/geocomment/static/js/main.e44bb982.chunk.js.map",
+    "runtime-main.js": "/geocomment/static/js/runtime-main.0ac961ac.js",
+    "runtime-main.js.map": "/geocomment/static/js/runtime-main.0ac961ac.js.map",
+    "static/js/2.700e9207.chunk.js": "/geocomment/static/js/2.700e9207.chunk.js",
+    "static/js/2.700e9207.chunk.js.map": "/geocomment/static/js/2.700e9207.chunk.js.map",
+    "static/js/3.e7ba0d1d.chunk.js": "/geocomment/static/js/3.e7ba0d1d.chunk.js",
+    "static/js/3.e7ba0d1d.chunk.js.map": "/geocomment/static/js/3.e7ba0d1d.chunk.js.map",
+    "index.html": "/geocomment/index.html",
+    "static/css/main.520acae7.chunk.css.map": "/geocomment/static/css/main.520acae7.chunk.css.map",
+    "static/js/2.700e9207.chunk.js.LICENSE.txt": "/geocomment/static/js/2.700e9207.chunk.js.LICENSE.txt",
+    "static/media/bubble_icon_blue.7714e3ae.svg": "/geocomment/static/media/bubble_icon_blue.7714e3ae.svg",
+    "static/media/bubble_icon_green.2dfd6c4e.svg": "/geocomment/static/media/bubble_icon_green.2dfd6c4e.svg",
+    "static/media/bubble_icon_red.6e131ae0.svg": "/geocomment/static/media/bubble_icon_red.6e131ae0.svg",
+    "static/media/bubble_icon_yellow.1498be91.svg": "/geocomment/static/media/bubble_icon_yellow.1498be91.svg",
+    "static/media/navigation_black_24dp.68d102d6.svg": "/geocomment/static/media/navigation_black_24dp.68d102d6.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.0ac961ac.js",
+    "static/js/2.700e9207.chunk.js",
+    "static/css/main.520acae7.chunk.css",
+    "static/js/main.e44bb982.chunk.js"
+  ]
+}
