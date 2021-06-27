@@ -7,6 +7,7 @@ import nav_icon from '../icons/navigation_black_24dp.svg'
 import { Service, thread } from "../api";
 import { Bubble } from "./Bubble";
 import useWindowDimensions from "../hooks/WindowDimensions";
+import { Link } from "react-router-dom";
 
 export function GeoCommentMap() {
   const { height, width } = useWindowDimensions();
@@ -84,7 +85,7 @@ export function GeoCommentMap() {
         center={location}
         zoom={18}
         scrollWheelZoom={false}
-        style={{height: height}}
+        style={{height: height -56 -48}} //TODO remove hardcoding
         zoomControl={false}
         dragging={false}
         >
@@ -92,7 +93,7 @@ export function GeoCommentMap() {
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {threads.map((thread) => <Bubble thread={thread} />)}
+      {threads.map((thread) => <Bubble thread={thread}></Bubble>)}
       <Marker position={location} icon={navigation_icon}/>
     </MapContainer>
   );
