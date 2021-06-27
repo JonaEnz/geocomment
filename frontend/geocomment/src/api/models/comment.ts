@@ -9,7 +9,7 @@ export type comment = newComment & {
   upvotes: number;
   downvotes: number;
   myvote?: comment.myvote;
-  created_at?: number;
+  created_at?: string;
 };
 
 export namespace comment {
