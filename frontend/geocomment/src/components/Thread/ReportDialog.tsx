@@ -52,7 +52,7 @@ function ReportDialog(props: {
         <DialogActions>
           <Button
             onClick={() => {
-              props.callback("reason");
+              props.callback("");
               handleClose();
             }}
             color="primary"
