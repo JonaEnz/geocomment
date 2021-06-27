@@ -1,6 +1,8 @@
-package pls.change.that;
+package pls.change.that.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import pls.change.that.model.Location;
+import pls.change.that.model.Thread;
 
 import javax.enterprise.context.ApplicationScoped;
 

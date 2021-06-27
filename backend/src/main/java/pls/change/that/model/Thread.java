@@ -1,4 +1,4 @@
-package pls.change.that;
+package pls.change.that.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
@@ -17,5 +18,6 @@ public class Thread {
     public Location location;
     @OneToMany
     @JsonIgnore
+    @NotEmpty
     public List<Comment> comments;
 }

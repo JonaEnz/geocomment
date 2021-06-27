@@ -1,4 +1,4 @@
-package pls.change.that;
+package pls.change.that.model;
 
 import javax.persistence.Embeddable;
 

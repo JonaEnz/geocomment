@@ -1,6 +1,10 @@
-package pls.change.that;
+package pls.change.that.resource;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import pls.change.that.Shared;
+import pls.change.that.model.Comment;
+import pls.change.that.model.Thread;
+import pls.change.that.repository.ThreadRepository;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

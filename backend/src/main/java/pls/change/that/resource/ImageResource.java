@@ -1,4 +1,8 @@
-package pls.change.that;
+package pls.change.that.resource;
+
+import pls.change.that.Shared;
+import pls.change.that.model.Image;
+import pls.change.that.repository.ImageRepository;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;

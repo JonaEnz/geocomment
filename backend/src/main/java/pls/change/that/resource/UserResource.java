@@ -1,4 +1,10 @@
-package pls.change.that;
+package pls.change.that.resource;
+
+import pls.change.that.Shared;
+import pls.change.that.model.Comment;
+import pls.change.that.model.User;
+import pls.change.that.repository.ThreadRepository;
+import pls.change.that.repository.UserRepository;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;

@@ -1,9 +1,8 @@
-package pls.change.that;
+package pls.change.that.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 
 @Entity

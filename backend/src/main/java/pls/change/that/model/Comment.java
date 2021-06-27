@@ -1,4 +1,4 @@
-package pls.change.that;
+package pls.change.that.model;
 
 import io.smallrye.common.constraint.Nullable;
 
@@ -18,6 +18,6 @@ public class Comment {
     @OneToOne
     @Nullable
     public Image image;
-    public int upVotes;
-    public int downVotes;
+    public int upvotes;
+    public int downvotes;
 }
