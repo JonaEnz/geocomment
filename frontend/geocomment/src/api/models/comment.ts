@@ -6,7 +6,8 @@ import type { newComment } from "./newComment";
 
 export type comment = newComment & {
   id: number;
-  votes: number;
+  upvotes: number;
+  downvotes: number;
   myvote?: comment.myvote;
   created_at?: number;
 };

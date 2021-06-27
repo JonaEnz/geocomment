@@ -46,7 +46,8 @@ function ReportsView() {
         parentId: 0,
         content:
           "Testerhfsdgghbfsgfsidgfdhgfdsgfgsgsdgdgsdssdgdgsgdfkahevhgfghahgdakgkhdgfghfkhdagfg",
-        votes: 5,
+        upvotes: 5,
+        downvotes: 5,
       },
       reason: "reason",
     },
