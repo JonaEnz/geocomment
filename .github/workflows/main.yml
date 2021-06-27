@@ -50,7 +50,7 @@ jobs:
         with:
           token: ${github-token}
           branch: gh-pages
-          folder: build
+          folder: frontend/geocomment/build
         env:
           CI: false
           github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
