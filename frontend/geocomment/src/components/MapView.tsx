@@ -6,7 +6,7 @@ import { LocationContext } from "../contexts/LocationContext";
 import WriteComment from "./Thread/WriteComment";
 
 function MapView() {
-  const LOCATION_UPDATE_INTERVAL = 5000;
+  const LOCATION_UPDATE_INTERVAL = 3000;
   const FALLBACK_LOCATION = { lat: 49.011202, lng: 8.404114 };
 
   const { userCredentials, setUserCredentials } = useUserContext();
