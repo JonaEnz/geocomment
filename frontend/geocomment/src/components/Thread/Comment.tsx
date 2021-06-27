@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: grey[900],
       color: grey[100],
     },
+    selected: {},
   })
 );
 
@@ -45,6 +46,7 @@ function ThreadComment(state: {
   comment: comment;
   selectCallback: (id: number) => void;
   reportCallback: (id: number) => void;
+  selected?: boolean;
   voteButtons?: boolean;
 }) {
   const classes = useStyles();
@@ -119,6 +121,7 @@ function ThreadComment(state: {
               comment={state.comment}
               reportCallback={state.reportCallback}
               selectCallback={state.selectCallback}
+              selected={state.selected}
             />
           )}
         </Grid>

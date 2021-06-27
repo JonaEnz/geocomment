@@ -6,16 +6,24 @@ import { Service as ServiceApi } from "../api/services/Service";
 import { thread } from "../api/models/thread";
 import { useState } from "react";
 import { comment } from "../api";
-import { threadId } from "worker_threads";
-import { Grid, AppBar, Toolbar } from "@material-ui/core";
+import { Grid, AppBar } from "@material-ui/core";
 import ReportDialog from "./Thread/ReportDialog";
 
-function onMessageSubmit(
+async function onMessageSubmit(
   msg: string,
   anon: boolean,
   threadId: number,
-  commentId: number
+  commentId: number,
+  file: any
 ): Promise<boolean> {
+  if (file !== null) {
+    var formdata = new FormData();
+    formdata.append("threadId", threadId.toString());
+    formdata.append("commentId", commentId.toString());
+    formdata.append("image", file, file.name);
+    var resp = await ServiceApi.uploadImage(formdata);
+    msg += "[img:" + resp.url + "]";
+  }
   ServiceApi.postComment(threadId, {
     threadId: threadId,
     parentId: commentId,
@@ -31,7 +39,13 @@ const DEFAULT_LEVELS = 3;
 
 function sendReport(reason: string, commentId: number, threadId: number) {
   ServiceApi.reportComment(threadId, commentId, {
-    comment: { id: commentId, threadId: threadId, parentId: 0, content: "" },
+    comment: {
+      id: commentId,
+      threadId: threadId,
+      parentId: 0,
+      content: "",
+      votes: 0,
+    },
     reason: reason,
   });
 }
@@ -97,6 +111,7 @@ function ThreadView(state: { thread: thread }) {
             setReportId(id);
             setOpenReport(true);
           }}
+          selected={comment.id === selectedCommentId}
         />
         <Grid style={{ marginLeft: "50px" }}>
           {children.map((child2) => {
@@ -118,6 +133,7 @@ function ThreadView(state: { thread: thread }) {
           setReportId(id);
           setOpenReport(true);
         }}
+        selected={selectedCommentId === 0}
       />
       {comments
         .filter((c) => c.parentId === 0)
@@ -133,7 +149,8 @@ function ThreadView(state: { thread: thread }) {
                 msg,
                 anon,
                 state.thread.id,
-                selectedCommentId
+                selectedCommentId,
+                getFile === undefined ? null : getFile
               );
             }}
           />
