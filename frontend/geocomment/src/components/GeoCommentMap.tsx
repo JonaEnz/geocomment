@@ -6,8 +6,11 @@ import { LocationTracer } from "./LocationTracer";
 import nav_icon from '../icons/navigation_black_24dp.svg'
 import { Service, thread } from "../api";
 import { Bubble } from "./Bubble";
+import useWindowDimensions from "../hooks/WindowDimensions";
 
 export function GeoCommentMap() {
+  const { height, width } = useWindowDimensions();
+
   const [threads, setThreads] = React.useState<thread[]>([])
   const {location, setLocation} = useLocation()
 
@@ -81,7 +84,7 @@ export function GeoCommentMap() {
         center={location}
         zoom={18}
         scrollWheelZoom={false}
-        style={{height: 2000}}
+        style={{height: height}}
         zoomControl={false}
         dragging={false}
         >
