@@ -98,7 +98,7 @@ function App() {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" className={classes.title}>
-                Geocomment
+                Active Discussion
               </Typography>
               <IconButton
                 aria-label="account of current user"
