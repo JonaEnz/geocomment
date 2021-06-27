@@ -3,13 +3,13 @@
 /* eslint-disable */
 
 export type user = {
-    id: number;
-    banned?: boolean;
-    /**
-     * Banned until (0 = infinite)
-     */
-    banUntil?: number;
-    private?: boolean;
-    admin?: boolean;
-    joined_at?: number;
-}
+  id: number;
+  banned?: boolean;
+  /**
+   * Banned until (0 = infinite)
+   */
+  banUntil?: string;
+  private?: boolean;
+  admin?: boolean;
+  joined_at?: string;
+};
