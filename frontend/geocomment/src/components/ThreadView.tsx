@@ -38,6 +38,9 @@ async function onMessageSubmit(
 const DEFAULT_LEVELS = 3;
 
 function sendReport(reason: string, commentId: number, threadId: number) {
+  if (reason === "") {
+    return;
+  }
   ServiceApi.reportComment(threadId, commentId, {
     comment: {
       id: commentId,
