@@ -10,33 +10,50 @@ import bubble_icon_green from "../icons/bubble_icon_green.svg";
 import { useHistory } from "react-router-dom";
 
 export type BubbleProps = {
-  thread: thread,
-  children?: JSX.Element
-}
+  thread: thread;
+  children?: JSX.Element;
+};
 
 export function Bubble(props: BubbleProps) {
   const COMMENT_ID_OF_ORIGINAL_COMMENT = 0;
 
   const [visibility, setVisibily] = React.useState<boolean>(false);
-  let browser_history = useHistory()
+  let browser_history = useHistory();
   const [icon, setIcon] = React.useState<Icon>(getBubbleIcon(0, "red"));
   const [link, setLink] = React.useState<string>();
 
   //start dummy code
-  const comment: comment = {
-    threadId: 42,
-    parentId: 0,
-    id: 123,
-    upvotes: 16,
-    downvotes: 16,
-    content: "Hey",
-  };
+  async function getDummyComment(
+    threadId: number,
+    commentId: number
+  ): Promise<comment> {
+    let votes = (Math.random() - 1 / 6) * 25;
+    let comment = {
+      threadId: 42,
+      parentId: 0,
+      id: 123,
+      upvotes: votes,
+      downvotes: 16,
+      content: "Hey",
+    };
 
-  setTimeout(() => {
-    setIcon(getBubbleIcon(comment.upvotes, "blue"));
-    setLink("HelloImaLink");
-    setVisibily(true);
-  }, 10000);
+    return new Promise<comment>((resolve, reject) =>
+      setTimeout(() => resolve(comment))
+    );
+  }
+
+  React.useEffect(() => {
+    getDummyComment(props.thread.id, COMMENT_ID_OF_ORIGINAL_COMMENT).then(
+      (comment: comment) => {
+        let colors = ["red", "blue", "green", "yellow"];
+        let random = Math.floor(Math.random() * colors.length);
+        let random_color = colors[random]
+        setIcon(getBubbleIcon(comment.upvotes, random_color));
+        setLink("HelloImaLink");
+        setVisibily(true);
+      }
+    );
+  }, []);
   //end dummy code
 
   // Service.getComment(state.thread.id, COMMENT_ID_OF_ORIGINAL_COMMENT)
@@ -52,7 +69,7 @@ export function Bubble(props: BubbleProps) {
       opacity={visibility ? 1 : 0}
       eventHandlers={{
         click: (e) => {
-          browser_history.push("/thread") //TODO Weiterleitung zur jeweiligen Seite
+          browser_history.push("/thread"); //TODO Weiterleitung zur jeweiligen Seite
         },
       }}
     />
