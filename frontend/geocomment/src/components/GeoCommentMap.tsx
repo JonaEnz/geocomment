@@ -85,7 +85,7 @@ export function GeoCommentMap() {
         center={location}
         zoom={18}
         scrollWheelZoom={false}
-        style={{height: height -56}} //TODO remove hardcoding
+        style={{height: height -56 -48}} //TODO remove hardcoding
         zoomControl={false}
         dragging={false}
         >
