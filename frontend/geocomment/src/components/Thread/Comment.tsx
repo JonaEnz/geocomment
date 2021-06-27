@@ -38,6 +38,14 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: grey[900],
       color: grey[100],
     },
+    upvote: {
+      color: grey[900],
+      backgroundColor: green[500],
+    },
+    downvote: {
+      color: grey[900],
+      backgroundColor: red[500],
+    },
     selected: {},
   })
 );
@@ -74,8 +82,10 @@ function ThreadComment(state: {
             display: "flex",
           }}
         >
-          <Avatar className={classes.secondary}>{state.comment.upvotes}</Avatar>
-          <Avatar className={classes.red}>{state.comment.downvotes}</Avatar>
+          <Avatar className={classes.upvote}>{state.comment.upvotes}</Avatar>
+          <Avatar className={classes.downvote}>
+            {state.comment.downvotes}
+          </Avatar>
         </Grid>
         <Grid
           item

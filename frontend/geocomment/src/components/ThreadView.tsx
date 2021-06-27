@@ -64,8 +64,7 @@ function ThreadView(state: { thread: thread }) {
       id: 1,
       threadId: 100,
       parentId: 0,
-      content:
-        "Testerhfsdgghbfsgfsidgfdhgfdsgfgsgsdgdgsdssdgdgsgdfkahevhgfghahgdakgkhdgfghfkhdagfg",
+      content: "Test Comment without an image",
       upvotes: 5,
       downvotes: 5,
     },
@@ -73,7 +72,7 @@ function ThreadView(state: { thread: thread }) {
       id: 2,
       threadId: 100,
       parentId: 1,
-      content: "dfsah[img:http://http.cat/201]",
+      content: "Test Comment with an image[img:http://http.cat/201]",
       upvotes: 5,
       downvotes: 5,
     },
@@ -81,7 +80,8 @@ function ThreadView(state: { thread: thread }) {
       id: 3,
       threadId: 100,
       parentId: 1,
-      content: "dfsah[img:http://http.cat/202]",
+      content:
+        "Long test comment Long test comment Long test comment Long test comment [img:http://http.cat/202]",
       upvotes: 5,
       downvotes: 5,
     },

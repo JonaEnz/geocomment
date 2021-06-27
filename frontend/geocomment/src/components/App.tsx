@@ -124,7 +124,8 @@ function App() {
                   thread={{
                     id: 1,
                     title: "Title",
-                    description: "dfsah[img:http://http.cat/201]",
+                    description:
+                      "Description[img:http://http.cat/201] of the thread.",
                     location: { lat: 1, lng: 2 },
                   }}
                 />

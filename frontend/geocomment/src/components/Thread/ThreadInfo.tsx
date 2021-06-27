@@ -71,7 +71,7 @@ function ThreadInfo(state: {
       </Typography>
       <Typography
         variant="body1"
-        style={{ padding: "5px", wordWrap: "break-word" }}
+        style={{ maxWidth: "75%", padding: "5px", wordWrap: "break-word" }}
       >
         {res != null ? res[1] : ""}
         {res != null ? res[3] : state.thread.description}
