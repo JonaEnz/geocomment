@@ -45,7 +45,10 @@ export function Bubble(props: BubbleProps) {
   React.useEffect(() => {
     getDummyComment(props.thread.id, COMMENT_ID_OF_ORIGINAL_COMMENT).then(
       (comment: comment) => {
-        setIcon(getBubbleIcon(comment.upvotes, "blue"));
+        let colors = ["red", "blue", "green", "yellow"];
+        let random = Math.floor(Math.random() * colors.length);
+        let random_color = colors[random]
+        setIcon(getBubbleIcon(comment.upvotes, random_color));
         setLink("HelloImaLink");
         setVisibily(true);
       }
